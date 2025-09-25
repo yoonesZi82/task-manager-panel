@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-provider";
 import DirectionProviderApp from "@/providers/direction-provider";
 import Layout from "@/components/layout/layout-web/Layout";
+import QueryProvider from "@/providers/query-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,14 +34,16 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <DirectionProviderApp dir={dir}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Layout>{children}</Layout>
-          </ThemeProvider>
+          <QueryProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Layout>{children}</Layout>
+            </ThemeProvider>
+          </QueryProvider>
         </DirectionProviderApp>
       </body>
     </html>

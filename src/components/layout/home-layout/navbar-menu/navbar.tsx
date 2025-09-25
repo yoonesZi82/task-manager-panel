@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import ButtonTheme from "@/components/change-theme/button-theme";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -89,61 +90,17 @@ export default function Navbar() {
           <NavigationMenu viewport={false}>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent">
-                  Home
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="gap-2 grid lg:grid-cols-[.75fr_1fr] md:w-[400px] lg:w-[500px]">
-                    <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <Link
-                          className="flex flex-col justify-end bg-linear-to-b from-muted/50 to-muted focus:shadow-md p-6 rounded-md outline-hidden w-full h-full no-underline select-none"
-                          href="/"
-                        >
-                          <div className="mt-4 mb-2 font-medium text-lg">
-                            ReUI
-                          </div>
-                          <p className="text-muted-foreground text-sm leading-tight">
-                            Beautifully designed components built with React and
-                            Tailwind CSS.
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <ListItem href="/docs" title="Introduction">
-                      Re-usable components built using Radix UI and Tailwind
-                      CSS.
-                    </ListItem>
-                    <ListItem href="/docs/installation" title="Installation">
-                      How to install dependencies and structure your app.
-                    </ListItem>
-                    <ListItem
-                      href="/docs/primitives/typography"
-                      title="Typography"
-                    >
-                      Styles for headings, paragraphs, lists...etc
-                    </ListItem>
-                  </ul>
-                </NavigationMenuContent>
+                <NavigationMenuLink
+                  className={cn(
+                    "!bg-transparent",
+                    navigationMenuTriggerStyle()
+                  )}
+                  asChild
+                >
+                  <Link href="/">Home</Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent">
-                  Components
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="gap-2 grid md:grid-cols-2 w-[400px] md:w-[500px] lg:w-[600px]">
-                    {components.map((component) => (
-                      <ListItem
-                        key={component.title}
-                        title={component.title}
-                        href={component.href}
-                      >
-                        {component.description}
-                      </ListItem>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
+
               <NavigationMenuItem>
                 <NavigationMenuLink
                   asChild
@@ -152,19 +109,19 @@ export default function Navbar() {
                     navigationMenuTriggerStyle()
                   )}
                 >
-                  <Link href="/docs">Docs</Link>
+                  <Link href="/gallery">Gallery</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="bg-transparent">
-                  List
+                  Contact Us
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="gap-4 grid w-[300px]">
                     <li>
                       <NavigationMenuLink asChild>
                         <Link href="#">
-                          <div className="font-medium">Components</div>
+                          <div className="font-medium">Team Members</div>
                           <div className="text-muted-foreground">
                             Browse all components in the library.
                           </div>
@@ -172,17 +129,9 @@ export default function Navbar() {
                       </NavigationMenuLink>
                       <NavigationMenuLink asChild>
                         <Link href="#">
-                          <div className="font-medium">Documentation</div>
+                          <div className="font-medium">Relation with us</div>
                           <div className="text-muted-foreground">
                             Learn how to use the library.
-                          </div>
-                        </Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link href="#">
-                          <div className="font-medium">Blog</div>
-                          <div className="text-muted-foreground">
-                            Read our latest blog posts.
                           </div>
                         </Link>
                       </NavigationMenuLink>
@@ -192,25 +141,22 @@ export default function Navbar() {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="bg-transparent">
-                  Simple
+                  About Us
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="gap-4 grid w-[200px]">
                     <li>
                       <NavigationMenuLink asChild>
-                        <Link href="#">Components</Link>
+                        <Link href="#">Information from us</Link>
                       </NavigationMenuLink>
                       <NavigationMenuLink asChild>
-                        <Link href="#">Documentation</Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link href="#">Blocks</Link>
+                        <Link href="#">Rules</Link>
                       </NavigationMenuLink>
                     </li>
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
-              <NavigationMenuItem>
+              {/* <NavigationMenuItem>
                 <NavigationMenuTrigger className="bg-transparent">
                   With Icon
                 </NavigationMenuTrigger>
@@ -238,13 +184,10 @@ export default function Navbar() {
                     </li>
                   </ul>
                 </NavigationMenuContent>
-              </NavigationMenuItem>
+              </NavigationMenuItem> */}
             </NavigationMenuList>
           </NavigationMenu>
-          <Button mode="icon" variant="secondary">
-            {" "}
-            <User />
-          </Button>
+          <ButtonTheme />
         </div>
       </div>
     </section>

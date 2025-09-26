@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum Provider {
+  LOCAL
+  GOOGLE
+  GITHUB
+}
+
+enum AccountType {
+  oauth
+  credentials
+}
+
+model User {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  email         String     @unique
+  phone         String?
+  phoneVerified Boolean    @default(false)
+  emailVerified Boolean    @default(false)
+  avatarUrl     String?
+  password      String?
+  role          Role       @default(USER)
+  provider      Provider   @default(LOCAL)
+  accounts      Account[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Account {
+  id                String     @id @default(auto()) @map("_id") @db.ObjectId
+  provider          Provider
+  providerAccountId String
+  type              AccountType
+  access_token      String?
+  refresh_token     String?
+  expires_at        Int?        // به صورت unix timestamp ذخیره می‌کنیم
+  userId            String      @db.ObjectId
+  user              User        @relation(fields: [userId], references: [id])
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  @@unique([provider, providerAccountId]) // هر provider+accountId یک بار
+}

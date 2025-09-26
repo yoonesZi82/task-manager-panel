@@ -1,7 +1,24 @@
+"use client";
 import React from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 function page() {
-  return <div className="pt-8 w-full container">page</div>;
+  const { data: session } = useSession();
+
+  if (session) {
+    return (
+      <>
+        <p>سلام {session.user?.name}</p>
+        <button onClick={() => signOut()}>خروج</button>
+      </>
+    );
+  }
+  return (
+    <div className="flex flex-col">
+      <button onClick={() => signIn("github")}>ورود با گیت‌هاب</button>
+      <button onClick={() => signIn("google")}>ورود با گوگل</button>
+    </div>
+  );
 }
 
 export default page;

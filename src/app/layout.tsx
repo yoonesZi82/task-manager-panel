@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import DirectionProviderApp from "@/providers/direction-provider";
 import Layout from "@/components/layout/layout-web/Layout";
 import QueryProvider from "@/providers/query-provider";
+import NextAuthProvider from "@/providers/nextauth-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,18 +34,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <DirectionProviderApp dir={dir}>
-          <QueryProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <Layout>{children}</Layout>
-            </ThemeProvider>
-          </QueryProvider>
-        </DirectionProviderApp>
+        <NextAuthProvider>
+          <DirectionProviderApp dir={dir}>
+            <QueryProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <Layout>{children}</Layout>
+              </ThemeProvider>
+            </QueryProvider>
+          </DirectionProviderApp>
+        </NextAuthProvider>
       </body>
     </html>
   );

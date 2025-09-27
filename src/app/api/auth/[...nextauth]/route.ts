@@ -5,7 +5,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "@/utils/prisma";
 
-// 🟢 تابع کمکی برای رفرش کردن توکن
 async function refreshAccessToken(token: any) {
   try {
     const account = await prisma.account.findFirst({
@@ -19,8 +18,6 @@ async function refreshAccessToken(token: any) {
       return { ...token, error: "NoRefreshToken" };
     }
 
-    // ⚡ اینجا باید درخواست واقعی به OAuth provider بزنی
-    // نمونه گوگل ↓
     const response = await fetch("https://oauth2.googleapis.com/token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -35,7 +32,6 @@ async function refreshAccessToken(token: any) {
     const refreshedTokens = await response.json();
     if (!response.ok) throw refreshedTokens;
 
-    // دیتابیس رو آپدیت کن
     await prisma.account.update({
       where: { id: account.id },
       data: {
@@ -71,7 +67,7 @@ export const authOptions: AuthOptions = {
       authorization: {
         params: {
           prompt: "consent",
-          access_type: "offline", // refresh_token بگیری
+          access_type: "offline",
           response_type: "code",
         },
       },
@@ -89,7 +85,9 @@ export const authOptions: AuthOptions = {
           where: { email: credentials.email },
         });
 
-        if (!user || !user.password) return null;
+        if (!user || !user.password) {
+          return null;
+        }
 
         const isValid = await bcrypt.compare(
           credentials.password,
@@ -117,7 +115,6 @@ export const authOptions: AuthOptions = {
 
         const userCount = await prisma.user.count();
 
-        // 🟢 User
         const dbUser = await prisma.user.upsert({
           where: { email },
           update: {},
@@ -131,7 +128,6 @@ export const authOptions: AuthOptions = {
           },
         });
 
-        // 🟢 Account
         await prisma.account.upsert({
           where: {
             provider_providerAccountId: {
@@ -166,7 +162,6 @@ export const authOptions: AuthOptions = {
     },
 
     async jwt({ token, user, account }) {
-      // لاگین اولیه
       if (user && account) {
         token.id = user.id;
         token.name = user.name;
@@ -182,7 +177,6 @@ export const authOptions: AuthOptions = {
           : null;
       }
 
-      // اگر توکن هنوز معتبره
       if (
         token.accessTokenExpires &&
         Date.now() < (token.accessTokenExpires as number)
@@ -190,7 +184,6 @@ export const authOptions: AuthOptions = {
         return token;
       }
 
-      // اگر منقضی شده → رفرش
       return await refreshAccessToken(token);
     },
 
@@ -211,7 +204,7 @@ export const authOptions: AuthOptions = {
   },
 
   pages: {
-    signIn: "/dashboard/login",
+    signIn: "/login",
   },
 
   secret: process.env.NEXTAUTH_SECRET,

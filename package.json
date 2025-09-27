@@ -10,8 +10,11 @@
     "format": "biome format --write"
   },
   "dependencies": {
+    "@base-ui-components/react": "^1.0.0-beta.3",
+    "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^6.16.2",
     "@radix-ui/react-direction": "^1.1.1",
+    "@radix-ui/react-slot": "^1.2.3",
     "@tanstack/react-query": "^5.90.2",
     "@tanstack/react-query-devtools": "^5.90.2",
     "bcryptjs": "^3.0.2",
@@ -25,7 +28,9 @@
     "radix-ui": "^1.4.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "tailwind-merge": "^3.3.1"
+    "react-hook-form": "^7.63.0",
+    "tailwind-merge": "^3.3.1",
+    "zod": "^4.1.11"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",

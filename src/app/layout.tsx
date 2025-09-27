@@ -6,6 +6,7 @@ import DirectionProviderApp from "@/providers/direction-provider";
 import Layout from "@/components/layout/layout-web/Layout";
 import QueryProvider from "@/providers/query-provider";
 import NextAuthProvider from "@/providers/nextauth-provider";
+import { ToastProvider } from "@/components/ui/base-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,7 +44,9 @@ export default function RootLayout({
                 enableSystem
                 disableTransitionOnChange
               >
-                <Layout>{children}</Layout>
+                <Layout>
+                  <ToastProvider>{children}</ToastProvider>
+                </Layout>
               </ThemeProvider>
             </QueryProvider>
           </DirectionProviderApp>

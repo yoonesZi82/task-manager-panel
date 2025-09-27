@@ -7,11 +7,13 @@ import HomeLayout from "../home-layout/HomeLayout";
 function Layout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isDashboard = pathname.startsWith("/dashboard");
-
+  const isLoginPage = pathname.startsWith("/login");
   return (
     <>
       {isDashboard ? (
         <DashboardLayout>{children}</DashboardLayout>
+      ) : isLoginPage ? (
+        <>{children}</>
       ) : (
         <HomeLayout>{children}</HomeLayout>
       )}

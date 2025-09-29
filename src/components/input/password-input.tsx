@@ -4,6 +4,7 @@ import { Check, Eye, EyeOff, X } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Input } from "../ui/input";
+import { Badge } from "../ui/badge";
 
 const PASSWORD_REQUIREMENTS = [
   { regex: /.{8,}/, text: "At least 8 characters" },
@@ -121,7 +122,7 @@ function PasswordInput({
         )}
       >
         <span>Must contain:</span>
-        <span>
+        <Badge variant="outline" shape="circle">
           {
             STRENGTH_CONFIG.texts[
               Math.min(
@@ -130,7 +131,7 @@ function PasswordInput({
               ) as keyof typeof STRENGTH_CONFIG.texts
             ]
           }
-        </span>
+        </Badge>
       </p>
 
       <ul

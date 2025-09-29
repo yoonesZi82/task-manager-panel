@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { name, email, password } = body;
-    console.log(name, email, password);
+
     if (!name || !email || !password) {
       return NextResponse.json(
         { message: "Please fill all the fields", status: 404 },
@@ -44,7 +44,8 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (err) {
-    console.log(err);
-    return new Response("Error", { status: 500 });
+    return new Response(`Unknown error in create user API --> ${err}`, {
+      status: 500,
+    });
   }
 }

@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,8 +14,12 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import RegisterSchema from "./schema/register-schema";
 import PasswordInput from "@/components/input/password-input";
+import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
 
 function RegisterForm() {
+  const toast = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -29,7 +32,23 @@ function RegisterForm() {
   });
 
   const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
-    console.log(data);
+    setIsLoading(true);
+    axios
+      .post("/api/auth/register", data)
+      .then(() => {
+        setIsLoading(false);
+        form.reset();
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        if (error?.status === 500) {
+          toast.add({
+            title: "Error",
+            description: "Something went wrong",
+            type: "error",
+          });
+        }
+      });
   };
 
   return (

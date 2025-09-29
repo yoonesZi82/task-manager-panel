@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import ButtonTheme from "@/components/change-theme/button-theme";
 import AuthButton from "../button/auth-button";
 import MenuList from "./menu-list";
@@ -10,10 +10,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
-
-  // Avoid SSR/Client mismatch
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const renderAuthButton = () => {
     if (!mounted || status === "loading")

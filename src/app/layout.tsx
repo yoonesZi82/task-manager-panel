@@ -15,7 +15,7 @@ const robotoSans = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "task-manager",
+  title: "Task Manger",
   description: "The task manger Application",
 };
 

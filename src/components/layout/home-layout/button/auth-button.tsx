@@ -1,7 +1,6 @@
 "use client";
 import ButtonTheme from "@/components/change-theme/button-theme";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,15 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  BellRing,
-  LayoutDashboard,
-  LogOut,
-  Mail,
-  Settings,
-  User,
-  User2,
-} from "lucide-react";
+import { LayoutDashboard, LogOut, Settings, User2 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
@@ -43,44 +34,25 @@ export default function AuthButton() {
               {status === "loading" ? (
                 <Skeleton className="rounded-full w-10 h-10" />
               ) : (
-                <Avatar>
-                  <AvatarImage src={session?.user?.avatarUrl} alt="avatarUrl" />
+                <Avatar className="rounded-full size-10">
+                  <AvatarImage
+                    src={session?.user?.avatarUrl}
+                    alt="avatarUrl"
+                    className="object-cover"
+                  />
                   <AvatarFallback>
                     <User2 size={16} />
                   </AvatarFallback>
                 </Avatar>
               )}
-              <div className="flex flex-col gap-1">
-                <p className="font-medium text-sm"> {session?.user?.name} </p>
-                <Badge
-                  shape="circle"
-                  size="sm"
-                  variant="secondary"
-                  className="!w-fit"
-                >
-                  Pro User
-                </Badge>
+              <div className="flex flex-col">
+                <p className="font-medium text-sm truncate">
+                  {" "}
+                  {session?.user?.name}{" "}
+                </p>
+                <span className="text-xs truncate">{session?.user.email}</span>
               </div>
             </div>
-            <Button
-              variant="outline"
-              size="icon"
-              shape="circle"
-              className="relative"
-              asChild
-            >
-              <Link href="#">
-                <BellRing />
-                <Badge
-                  variant="primary"
-                  shape="circle"
-                  size="sm"
-                  className="top-0 absolute -translate-x-1/2 -translate-y-1/2 rtl:translate-x-1/2 start-full"
-                >
-                  5
-                </Badge>
-              </Link>
-            </Button>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
@@ -91,9 +63,9 @@ export default function AuthButton() {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="dashboard/profile">
-                <User />
-                <span>Profile</span>
+              <Link href="dashboard/account">
+                <User2 />
+                <span>account</span>
               </Link>
             </DropdownMenuItem>
 

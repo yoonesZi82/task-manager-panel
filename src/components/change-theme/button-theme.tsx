@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
 
-function ButtonTheme({ shape = "circle" }: { shape?: "default" | "circle" }) {
+function ButtonTheme({ shape = "default" }: { shape?: "default" | "circle" }) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -23,7 +23,13 @@ function ButtonTheme({ shape = "circle" }: { shape?: "default" | "circle" }) {
   };
 
   return (
-    <Button onClick={toggleTheme} shape={shape} mode="icon">
+    <Button
+      onClick={toggleTheme}
+      shape={shape}
+      mode="icon"
+      variant="outline"
+      className="!rounded-xl"
+    >
       {setIcon()}
     </Button>
   );

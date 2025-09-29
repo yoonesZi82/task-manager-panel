@@ -8,17 +8,16 @@ import jwt from "jsonwebtoken";
 import { Provider } from "@prisma/client"; // Prisma enum
 import crypto from "crypto";
 
-// ⏳ تنظیمات زمان انقضا
-const LOCAL_ACCESS_EXPIRES_SECONDS = 30; // 30s برای تست
-const LOCAL_REFRESH_EXPIRES_SECONDS = 60; // 60s برای تست
+const LOCAL_ACCESS_EXPIRES_SECONDS = 24 * 60 * 60; // 1 day
+const LOCAL_REFRESH_EXPIRES_SECONDS = 30 * 24 * 60 * 60; // 30 days
 const JWT_SIGN_OPTIONS = { algorithm: "HS256" as const };
 
-// تولید Refresh Token رندوم
+// Create Refresh Token
 function generateRefreshToken() {
   return crypto.randomBytes(48).toString("hex");
 }
 
-// تابع Refresh Token
+// Refresh Access Token
 async function refreshAccessToken(token: any) {
   try {
     const account = await prisma.account.findFirst({

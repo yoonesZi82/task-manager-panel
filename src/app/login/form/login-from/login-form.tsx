@@ -39,7 +39,7 @@ function LoginForm() {
     if (result?.error) {
       toast.add({
         title: "Error",
-        description: "Email or Password is wrong",
+        description: "Email or Password is not correct",
         type: "error",
       });
     } else {

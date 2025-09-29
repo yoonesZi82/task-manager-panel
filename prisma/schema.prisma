@@ -46,11 +46,13 @@ model Account {
   type              AccountType
   access_token      String?
   refresh_token     String?
-  expires_at        Int?        // به صورت unix timestamp ذخیره می‌کنیم
-  userId            String      @db.ObjectId
-  user              User        @relation(fields: [userId], references: [id])
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
+  access_expires_at Int?      
+  refresh_expires_at Int?     
+  userId            String    @db.ObjectId
+  user              User      @relation(fields: [userId], references: [id])
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
-  @@unique([provider, providerAccountId]) // هر provider+accountId یک بار
+  @@unique([provider, providerAccountId])
 }
+

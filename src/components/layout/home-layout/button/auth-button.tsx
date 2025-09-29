@@ -1,3 +1,4 @@
+"use client";
 import ButtonTheme from "@/components/change-theme/button-theme";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   BellRing,
   LayoutDashboard,
@@ -20,29 +22,42 @@ import {
   User,
   User2,
 } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function AuthButton() {
+  const { data: session, status } = useSession();
   return (
     <div className="flex items-center gap-2">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline">
+          <Button variant="outline" size="lg" className="rounded-lg">
             <User2 />
-            Account
+            {session?.user?.name}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-64">
           {/* Account Section */}
           <DropdownMenuLabel className="flex justify-between items-center gap-4 w-full">
             <div className="flex items-center gap-2">
-              <Avatar>
-                <AvatarImage src="/media/avatars/14.png" alt="@reui" />
-                <AvatarFallback>CH</AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col">
-                <p className="font-medium text-sm"> Yoones Zamani </p>
-                <Badge shape="circle" variant="secondary" className="!w-fit">
+              {status === "loading" ? (
+                <Skeleton className="rounded-full w-10 h-10" />
+              ) : (
+                <Avatar>
+                  <AvatarImage src={session?.user?.avatarUrl} alt="avatarUrl" />
+                  <AvatarFallback>
+                    <User2 size={16} />
+                  </AvatarFallback>
+                </Avatar>
+              )}
+              <div className="flex flex-col gap-1">
+                <p className="font-medium text-sm"> {session?.user?.name} </p>
+                <Badge
+                  shape="circle"
+                  size="sm"
+                  variant="secondary"
+                  className="!w-fit"
+                >
                   Pro User
                 </Badge>
               </div>
@@ -70,7 +85,7 @@ export default function AuthButton() {
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link href="dashboard/dashboard">
+              <Link href="/dashboard">
                 <LayoutDashboard />
                 <span>Dashboard</span>
               </Link>
@@ -81,12 +96,7 @@ export default function AuthButton() {
                 <span>Profile</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="dashboard/inbox">
-                <Mail />
-                <span>Inbox</span>
-              </Link>
-            </DropdownMenuItem>
+
             <DropdownMenuItem asChild>
               <Link href="dashboard/settings">
                 <Settings />
@@ -97,7 +107,7 @@ export default function AuthButton() {
 
           {/* Logout */}
           <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">
+          <DropdownMenuItem variant="destructive" onClick={() => signOut()}>
             <LogOut />
             <span>Log Out</span>
           </DropdownMenuItem>

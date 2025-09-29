@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
   Form,
   FormControl,
@@ -16,8 +16,14 @@ import RegisterSchema from "./schema/register-schema";
 import PasswordInput from "@/components/input/password-input";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
+import { StepType } from "../../types/step.type";
+import CustomButton from "@/components/button/CustomButton";
 
-function RegisterForm() {
+function RegisterForm({
+  setStep,
+}: {
+  setStep: Dispatch<SetStateAction<StepType>>;
+}) {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -37,11 +43,25 @@ function RegisterForm() {
       .post("/api/auth/register", data)
       .then(() => {
         setIsLoading(false);
+        toast.add({
+          title: "Success",
+          description: "Your create account successfully",
+          type: "success",
+        });
         form.reset();
+        setTimeout(() => {
+          setStep("login");
+        }, 3000);
       })
       .catch((error) => {
         setIsLoading(false);
-        if (error?.status === 500) {
+        if (error?.status === 400) {
+          toast.add({
+            title: "Warning",
+            description: "This email is already exist",
+            type: "warning",
+          });
+        } else {
           toast.add({
             title: "Error",
             description: "Something went wrong",
@@ -126,9 +146,14 @@ function RegisterForm() {
           )}
         />
         <div className="flex justify-center items-center gap-2.5">
-          <Button type="submit" className="w-full" size="lg">
+          <CustomButton
+            type="submit"
+            className="w-full"
+            size="lg"
+            isLoading={isLoading}
+          >
             Login
-          </Button>
+          </CustomButton>
         </div>
       </form>
     </Form>

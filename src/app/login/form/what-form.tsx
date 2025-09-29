@@ -15,8 +15,7 @@ import LoginForm from "./login-from/login-form";
 import RegisterForm from "./register-form/register-form";
 import ForgetPassword from "./forget-password-form/forget-password";
 import ButtonTheme from "@/components/change-theme/button-theme";
-
-type StepType = "login" | "register" | "password";
+import { StepType } from "../types/step.type";
 
 function WhatForm() {
   const [step, setStep] = useState<StepType>("login");
@@ -45,7 +44,7 @@ function WhatForm() {
         {step === "login" ? (
           <LoginForm />
         ) : step === "register" ? (
-          <RegisterForm />
+          <RegisterForm setStep={setStep} />
         ) : (
           <ForgetPassword />
         )}

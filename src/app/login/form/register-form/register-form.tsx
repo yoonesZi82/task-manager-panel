@@ -11,13 +11,12 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
 import RegisterSchema from "./schema/register-schema";
 import PasswordInput from "@/components/input/password-input";
-import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { StepType } from "../../types/step.type";
 import CustomButton from "@/components/button/CustomButton";
+import { registerAction } from "./actions/register-action";
 
 function RegisterForm({
   setStep,
@@ -37,38 +36,42 @@ function RegisterForm({
     },
   });
 
-  const onSubmit = (data: z.infer<typeof RegisterSchema>) => {
-    setIsLoading(true);
-    axios
-      .post("/api/auth/register", data)
-      .then(() => {
-        setIsLoading(false);
+  const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
+    try {
+      setIsLoading(true);
+
+      const result = await registerAction(data);
+
+      if (result.ok) {
         toast.add({
           title: "Success",
-          description: "Your create account successfully",
+          description: "Your registration was successful",
           type: "success",
         });
         form.reset();
-        setTimeout(() => {
-          setStep("login");
-        }, 3000);
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        if (error?.status === 400) {
-          toast.add({
-            title: "Warning",
-            description: "This email is already exist",
-            type: "warning",
-          });
-        } else {
-          toast.add({
-            title: "Error",
-            description: "Something went wrong",
-            type: "error",
-          });
-        }
+        setTimeout(() => setStep("login"), 3000);
+      } else if (result.status === 400) {
+        toast.add({
+          title: "Warning",
+          description: "This email is already registered",
+          type: "warning",
+        });
+      } else {
+        toast.add({
+          title: "Error",
+          description: result.message,
+          type: "error",
+        });
+      }
+    } catch (err) {
+      toast.add({
+        title: "Error",
+        description: "Something went wrong",
+        type: "error",
       });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

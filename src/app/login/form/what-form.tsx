@@ -49,7 +49,7 @@ function WhatForm() {
           <ForgetPassword />
         )}
       </CardContent>
-      <CardFooter className="justify-between items-center">
+      <CardFooter className="flex lg:flex-row flex-col justify-center lg:justify-between items-center">
         <div className="flex items-center">
           <span>
             {" "}

@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { set, z } from "zod";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import LoginSchema from "./schema/login-schema";
 import PasswordInput from "@/components/input/password-input";
@@ -101,10 +101,10 @@ function LoginForm() {
           >
             Login {isLoading ? <LoaderCircle className="animate-spin" /> : null}
           </Button>
-          <div className="flex justify-between items-center gap-5 w-full">
+          <div className="flex justify-center items-center gap-2 lg:gap-5 w-full">
             <Button
               type="button"
-              className="w-full"
+              className="w-1/2 lg:w-full"
               size="lg"
               variant="outline"
               onClick={() =>
@@ -115,7 +115,7 @@ function LoginForm() {
             </Button>
             <Button
               type="button"
-              className="w-full"
+              className="w-1/2 lg:w-full"
               size="lg"
               variant="outline"
               onClick={() =>

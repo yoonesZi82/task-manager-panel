@@ -1,6 +1,6 @@
 interface StepType {
   id: number;
-  title: string;
+  title?: string;
   description?: string;
   icon?: React.ReactNode;
   content: React.ReactNode;

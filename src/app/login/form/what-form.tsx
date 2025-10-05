@@ -16,6 +16,7 @@ import RegisterForm from "./register-form/register-form";
 import ForgetPassword from "./forget-password-form/forget-password";
 import ButtonTheme from "@/components/change-theme/button-theme";
 import { StepType } from "../types/step.type";
+import { cn } from "@/lib/utils";
 
 function WhatForm() {
   const [step, setStep] = useState<StepType>("login");
@@ -49,7 +50,12 @@ function WhatForm() {
           <ForgetPassword />
         )}
       </CardContent>
-      <CardFooter className="flex lg:flex-row flex-col justify-center lg:justify-between items-center">
+      <CardFooter
+        className={cn(
+          "flex lg:flex-row flex-col justify-center items-center",
+          step === "password" ? "lg:justify-center" : "justify-between"
+        )}
+      >
         <div className="flex items-center">
           <span>
             {" "}
@@ -67,14 +73,16 @@ function WhatForm() {
           </Button>
         </div>
 
-        <Button
-          mode="link"
-          underline="dashed"
-          onClick={() => changeStep("password")}
-          asChild
-        >
-          <span>Forget Password</span>
-        </Button>
+        {step !== "password" ? (
+          <Button
+            mode="link"
+            underline="dashed"
+            onClick={() => changeStep("password")}
+            asChild
+          >
+            <span>Forget Password</span>
+          </Button>
+        ) : null}
       </CardFooter>
     </Card>
   );

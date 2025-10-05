@@ -1,7 +1,7 @@
 import React from "react";
-import StepperView from "./stepper/StepperView";
+import StepperView from "./stepper/components/StepperView";
 import { StepperProvider } from "@/context/stepper/StepperContext";
-import steps from "./stepper/stepper-list";
+import steps from "./stepper/lists/list";
 
 function ForgetPassword() {
   return (

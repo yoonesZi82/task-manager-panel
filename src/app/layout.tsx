@@ -1,6 +1,5 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-provider";
 import DirectionProviderApp from "@/providers/direction-provider";
 import Layout from "@/components/layout/layout-web/Layout";
@@ -8,11 +7,12 @@ import QueryProvider from "@/providers/query-provider";
 import NextAuthProvider from "@/providers/nextauth-provider";
 import { ToastProvider } from "@/components/ui/base-toast";
 import AuthWatcher from "@/components/auth/auth-whatcher";
+import { Roboto } from "@/configs/fonts";
+import { cn } from "@/lib/utils";
 
-const robotoSans = Roboto({
-  variable: "----font-roboto-sans",
-  subsets: ["latin"],
-});
+const fonts = {
+  en: Roboto,
+};
 
 export const metadata: Metadata = {
   title: "Task Manger",
@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html dir={dir} lang={dir === "rtl" ? "fa" : "en"} suppressHydrationWarning>
-      <body className={`${robotoSans.variable} antialiased`}>
+      <body className={cn("antialiased", fonts.en.variable)}>
         <NextAuthProvider>
           <DirectionProviderApp dir={dir}>
             <QueryProvider>

@@ -46,11 +46,19 @@ type PasswordStrength = {
 };
 
 function PasswordInput({
+  id = "password",
   isShowRules = true,
   name = "password",
+  placeholder = "Password ...",
+  variant = "md",
+  disable = false,
 }: {
+  id?: string;
   isShowRules?: boolean;
   name?: string;
+  placeholder?: string;
+  variant?: "sm" | "md" | "lg";
+  disable?: boolean;
 }) {
   const { control, watch } = useFormContext();
   const [isVisible, setIsVisible] = useState(false);
@@ -76,13 +84,13 @@ function PasswordInput({
         render={({ field }) => (
           <div className="relative">
             <Input
-              id="password"
-              placeholder="Password ..."
-              variant="lg"
+              id={id}
+              placeholder={placeholder}
+              variant={variant}
               type={isVisible ? "text" : "password"}
               aria-invalid={isShowRules ? calculateStrength.score < 4 : false}
               aria-describedby="password-strength"
-              className="bg-background p-2 border-2 focus-within:border-blue-700 rounded-md outline-none w-full transition"
+              disabled={disable}
               {...field}
             />
             <button

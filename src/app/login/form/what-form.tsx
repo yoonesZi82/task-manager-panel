@@ -9,30 +9,25 @@ import {
   CardTitle,
   CardToolbar,
 } from "@/components/ui/card";
-import { Settings } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import LoginForm from "./login-from/login-form";
 import RegisterForm from "./register-form/register-form";
 import ForgetPassword from "./forget-password-form/forget-password";
 import ButtonTheme from "@/components/change-theme/button-theme";
-import { StepType } from "../types/step.type";
 import { cn } from "@/lib/utils";
+import { useStepper } from "@/context/stepper/StepperContext";
 
 function WhatForm() {
-  const [step, setStep] = useState<StepType>("login");
-
-  const changeStep = (newStep: StepType) => {
-    setStep(newStep);
-  };
+  const { howPage, setHowPage } = useStepper();
 
   return (
     <Card variant="accent" className="rounded-xl w-full max-w-lg">
       <CardHeader>
         <CardHeading>
           <CardTitle>
-            {step === "login"
+            {howPage === "login"
               ? "Login"
-              : step === "register"
+              : howPage === "register"
               ? "Register"
               : "Forget Password"}
           </CardTitle>
@@ -42,10 +37,10 @@ function WhatForm() {
         </CardToolbar>
       </CardHeader>
       <CardContent className="max-h-[550px] overflow-y-auto login-box">
-        {step === "login" ? (
+        {howPage === "login" ? (
           <LoginForm />
-        ) : step === "register" ? (
-          <RegisterForm setStep={setStep} />
+        ) : howPage === "register" ? (
+          <RegisterForm />
         ) : (
           <ForgetPassword />
         )}
@@ -53,31 +48,33 @@ function WhatForm() {
       <CardFooter
         className={cn(
           "flex lg:flex-row flex-col justify-center items-center",
-          step === "password" ? "lg:justify-center" : "justify-between"
+          howPage === "password" ? "lg:justify-center" : "lg:justify-between"
         )}
       >
         <div className="flex items-center">
           <span>
             {" "}
-            {step === "login"
+            {howPage === "login"
               ? "Don't have an account?"
               : "Already have an account?"}{" "}
           </span>
           <Button
             mode="link"
             underlined="dashed"
-            onClick={() => changeStep(step === "login" ? "register" : "login")}
+            onClick={() =>
+              setHowPage(howPage === "login" ? "register" : "login")
+            }
             asChild
           >
-            {step === "login" ? <span>Register</span> : <span>Login</span>}
+            {howPage === "login" ? <span>Register</span> : <span>Login</span>}
           </Button>
         </div>
 
-        {step !== "password" ? (
+        {howPage !== "password" ? (
           <Button
             mode="link"
             underline="dashed"
-            onClick={() => changeStep("password")}
+            onClick={() => setHowPage("password")}
             asChild
           >
             <span>Forget Password</span>

@@ -1,3 +1,4 @@
+"use client";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +22,7 @@ import { LoaderCircle } from "lucide-react";
 
 function EmailOrPhone() {
   const toast = useToast();
-  const { next } = useStepper();
+  const { next, setData } = useStepper();
 
   const form = useForm<z.infer<typeof emailOrPhoneSchema>>({
     resolver: zodResolver(emailOrPhoneSchema),
@@ -58,6 +59,7 @@ function EmailOrPhone() {
   const { isPending, mutate } = mutation;
 
   const Send = (data: z.infer<typeof emailOrPhoneSchema>) => {
+    setData({ contact: data.contact });
     mutate(data);
   };
 

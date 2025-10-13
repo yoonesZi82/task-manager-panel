@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import {
   Form,
   FormControl,
@@ -14,16 +14,13 @@ import { z } from "zod";
 import RegisterSchema from "./schema/register-schema";
 import PasswordInput from "@/components/input/password-input";
 import { useToast } from "@/hooks/use-toast";
-import { StepType } from "../../types/step.type";
 import CustomButton from "@/components/button/CustomButton";
 import { registerAction } from "./actions/register-action";
+import { useStepper } from "@/context/stepper/StepperContext";
 
-function RegisterForm({
-  setStep,
-}: {
-  setStep: Dispatch<SetStateAction<StepType>>;
-}) {
+function RegisterForm() {
   const toast = useToast();
+  const { setHowPage } = useStepper();
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -49,7 +46,7 @@ function RegisterForm({
           type: "success",
         });
         form.reset();
-        setTimeout(() => setStep("login"), 3000);
+        setTimeout(() => setHowPage("login"), 3000);
       } else if (result.status === 400) {
         toast.add({
           title: "Warning",
@@ -130,7 +127,7 @@ function RegisterForm({
             <FormItem className="w-full">
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <PasswordInput />
+                <PasswordInput variant="lg" />
               </FormControl>
             </FormItem>
           )}
@@ -142,7 +139,11 @@ function RegisterForm({
             <FormItem className="w-full">
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
-                <PasswordInput name="confirmPassword" isShowRules={false} />
+                <PasswordInput
+                  variant="lg"
+                  name="confirmPassword"
+                  isShowRules={false}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

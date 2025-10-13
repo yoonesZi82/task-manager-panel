@@ -53,6 +53,7 @@ function StepperContentUi() {
                       size="sm"
                       onClick={prev}
                       className="group"
+                      disabled={currentStep >= 3}
                     >
                       <ArrowLeft className="transition-all group-hover:-translate-x-1 duration-300" />
                       back

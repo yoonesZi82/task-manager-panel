@@ -20,18 +20,23 @@ interface StepperContextType {
   setData: (data: any) => void;
   isNextDisabled: boolean;
   isPrevDisabled: boolean;
+  howPage: "login" | "register" | "password";
+  setHowPage: (page: "login" | "register" | "password") => void;
 }
 
 const StepperContext = createContext<StepperContextType | undefined>(undefined);
 
 interface StepperProviderProps {
   children: ReactNode;
-  steps: any[]; // لیست استپ‌ها از بیرون
+  steps: any[];
 }
 
 export function StepperProvider({ children, steps }: StepperProviderProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [data, setData] = useState<any>(null);
+  const [howPage, setHowPage] = useState<"login" | "register" | "password">(
+    "login"
+  );
 
   const totalSteps = steps?.length ?? 1;
 
@@ -62,6 +67,8 @@ export function StepperProvider({ children, steps }: StepperProviderProps) {
         setData,
         isNextDisabled,
         isPrevDisabled,
+        howPage,
+        setHowPage,
       }}
     >
       {children}

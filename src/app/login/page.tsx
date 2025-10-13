@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import WhatForm from "./form/what-form";
 import { StepperProvider } from "@/context/stepper/StepperContext";

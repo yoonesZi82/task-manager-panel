@@ -156,7 +156,7 @@ function RegisterForm() {
             size="lg"
             isLoading={isLoading}
           >
-            Login
+            Register
           </CustomButton>
         </div>
       </form>

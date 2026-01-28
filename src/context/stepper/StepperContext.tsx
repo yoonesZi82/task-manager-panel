@@ -9,6 +9,8 @@ import React, {
 } from "react";
 import StepType from "./types/step.type";
 
+type PageType = "login" | "register" | "password";
+
 interface StepperContextType {
   steps: StepType[];
   currentStep: number;
@@ -20,23 +22,21 @@ interface StepperContextType {
   setData: (data: any) => void;
   isNextDisabled: boolean;
   isPrevDisabled: boolean;
-  howPage: "login" | "register" | "password";
-  setHowPage: (page: "login" | "register" | "password") => void;
+  howPage: PageType;
+  setHowPage: (page: PageType) => void;
 }
 
 const StepperContext = createContext<StepperContextType | undefined>(undefined);
 
 interface StepperProviderProps {
   children: ReactNode;
-  steps: any[];
+  steps: StepType[];
 }
 
 export function StepperProvider({ children, steps }: StepperProviderProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [data, setData] = useState<any>(null);
-  const [howPage, setHowPage] = useState<"login" | "register" | "password">(
-    "login"
-  );
+  const [howPage, setHowPage] = useState<PageType>("login");
 
   const totalSteps = steps?.length ?? 1;
 
@@ -45,7 +45,6 @@ export function StepperProvider({ children, steps }: StepperProviderProps) {
   const prev = () => setCurrentStep((prev) => (prev > 1 ? prev - 1 : prev));
   const reset = () => setCurrentStep(1);
 
-  // کنترل فعال / غیرفعال بودن دکمه‌ها
   const { isNextDisabled, isPrevDisabled } = useMemo(
     () => ({
       isNextDisabled: currentStep >= totalSteps,

@@ -17,7 +17,7 @@ export default function AuthWatcher() {
     ) {
       toast.add({
         title: "Warning",
-        description: "Your session has expired. Please log in again.",
+        description: "Your session has expired. Please login again.",
         type: "warning",
       });
       setTimeout(() => {

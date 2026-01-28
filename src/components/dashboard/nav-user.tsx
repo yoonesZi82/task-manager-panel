@@ -31,7 +31,7 @@ import { Skeleton } from "../ui/skeleton";
 import Link from "next/link";
 import NotificationSheet from "../layout/dashboard-layout/sheet/notification-sheet";
 
-export function NavUser({
+export default function NavUser({
   user,
 }: {
   user: {

@@ -2,10 +2,14 @@ import React from "react";
 import { Stepper } from "@/components/ui/stepper";
 import { Check, LoaderCircleIcon } from "lucide-react";
 import { useStepper } from "@/context/stepper/StepperContext";
-import StepperList from "./stepper-list";
-import StepperContentUi from "./stepper-content";
+import StepperList from "./StepperList";
+import StepperContentUi from "./StepperContentUi";
 
-function StepperView() {
+function StepperView({
+  classNameUi,
+}: {
+  classNameUi?: { container?: string; header?: string };
+}) {
   const { currentStep, setCurrentStep } = useStepper();
   return (
     <Stepper
@@ -19,7 +23,7 @@ function StepperView() {
       className="space-y-8"
     >
       <StepperList />
-      <StepperContentUi />
+      <StepperContentUi classNameUi={classNameUi} />
     </Stepper>
   );
 }

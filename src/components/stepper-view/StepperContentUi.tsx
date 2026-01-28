@@ -5,8 +5,13 @@ import { useStepper } from "@/context/stepper/StepperContext";
 import { motion, AnimatePresence, scale } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-function StepperContentUi() {
+function StepperContentUi({
+  classNameUi,
+}: {
+  classNameUi?: { container?: string; header?: string };
+}) {
   const { steps, currentStep, prev } = useStepper();
 
   const variants = {
@@ -28,7 +33,12 @@ function StepperContentUi() {
   };
 
   return (
-    <StepperPanel className="relative p-4 border-[1.5px] border-border border-dashed rounded-xl w-full h-full overflow-hidden">
+    <StepperPanel
+      className={cn(
+        "relative p-4 border-[1.5px] border-border border-dashed rounded-xl w-full h-full overflow-hidden",
+        classNameUi?.container
+      )}
+    >
       <AnimatePresence initial={false} custom={currentStep}>
         {steps.map((step, index) =>
           index + 1 === currentStep ? (
@@ -47,10 +57,11 @@ function StepperContentUi() {
                 className="flex flex-col gap-2 w-full"
               >
                 {currentStep > 1 ? (
-                  <div className="flex w-full">
+                  <div className={cn("flex w-full", classNameUi?.header)}>
                     <Button
-                      variant="ghost"
-                      size="sm"
+                      variant="primary"
+                      appearance="ghost"
+                      size="md"
                       onClick={prev}
                       className="group"
                       disabled={currentStep >= 3}

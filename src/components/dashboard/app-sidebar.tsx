@@ -1,22 +1,10 @@
 "use client";
-import React from "react";
-import {
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  LifeBuoy,
-  Map,
-  PieChart,
-  Send,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Bot, Command, Settings2, SquareTerminal } from "lucide-react";
 
-import { NavMain } from "./nav-main";
-import { NavProjects } from "./nav-projects";
-import { NavSecondary } from "./nav-secondary";
-import { NavUser } from "./nav-user";
+import NavMain from "./nav-main";
+import NavSetting from "./nav-setting";
+import NavUser from "./nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -27,11 +15,17 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useSession } from "next-auth/react";
+import { SidebarItemsProps } from "./types/app-sidebar.type";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: session } = useSession();
-  const data = session?.user
-    ? {
+  const [sidebarItems, setSidebarItems] = useState<SidebarItemsProps | null>(
+    null
+  );
+
+  const newSidebarItems = useMemo(() => {
+    if (!session?.user) {
+      const createNewSidebarItems: SidebarItemsProps = {
         user: {
           name: session?.user?.name || "",
           email: session?.user?.email || "",
@@ -39,122 +33,58 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         },
         navMain: [
           {
-            title: "Playground",
+            title: "Project",
             url: "#",
             icon: SquareTerminal,
             isActive: true,
             items: [
               {
-                title: "History",
-                url: "#",
+                title: "Create",
+                url: "/dashboard/project/create",
               },
               {
-                title: "Starred",
-                url: "#",
-              },
-              {
-                title: "Settings",
-                url: "#",
+                title: "All project",
+                url: "/dashboard/project/all",
               },
             ],
           },
+        ],
+        ai: [
           {
             title: "Models",
             url: "#",
             icon: Bot,
             items: [
               {
-                title: "Genesis",
-                url: "#",
+                title: "Chat With AI",
+                url: "/dashboard/ai/chat",
               },
               {
-                title: "Explorer",
-                url: "#",
-              },
-              {
-                title: "Quantum",
-                url: "#",
+                title: "Setting AI",
+                url: "/dashboard/ai/setting",
               },
             ],
           },
-          {
-            title: "Documentation",
-            url: "#",
-            icon: BookOpen,
-            items: [
-              {
-                title: "Introduction",
-                url: "#",
-              },
-              {
-                title: "Get Started",
-                url: "#",
-              },
-              {
-                title: "Tutorials",
-                url: "#",
-              },
-              {
-                title: "Changelog",
-                url: "#",
-              },
-            ],
-          },
+        ],
+        setting: [
           {
             title: "Settings",
-            url: "#",
+            url: "/dashboard/settings",
             icon: Settings2,
-            items: [
-              {
-                title: "General",
-                url: "#",
-              },
-              {
-                title: "Team",
-                url: "#",
-              },
-              {
-                title: "Billing",
-                url: "#",
-              },
-              {
-                title: "Limits",
-                url: "#",
-              },
-            ],
           },
         ],
-        navSecondary: [
-          {
-            title: "Support",
-            url: "#",
-            icon: LifeBuoy,
-          },
-          {
-            title: "Feedback",
-            url: "#",
-            icon: Send,
-          },
-        ],
-        projects: [
-          {
-            name: "Design Engineering",
-            url: "#",
-            icon: Frame,
-          },
-          {
-            name: "Sales & Marketing",
-            url: "#",
-            icon: PieChart,
-          },
-          {
-            name: "Travel",
-            url: "#",
-            icon: Map,
-          },
-        ],
-      }
-    : null;
+      };
+      return createNewSidebarItems;
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (newSidebarItems) {
+      setSidebarItems(newSidebarItems);
+    } else {
+      setSidebarItems(null);
+    }
+  }, [newSidebarItems]);
 
   return (
     <Sidebar variant="inset" {...props}>
@@ -176,11 +106,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {data && <NavMain items={data.navMain} />}
-        {data && <NavProjects projects={data.projects} />}
-        {data && <NavSecondary items={data.navSecondary} />}
+        {sidebarItems && (
+          <>
+            <NavMain items={sidebarItems.navMain} title="Projects" />
+            <NavMain items={sidebarItems.ai} title="AI" />
+            <NavSetting items={sidebarItems.setting} />
+          </>
+        )}
       </SidebarContent>
-      <SidebarFooter>{data && <NavUser user={data.user} />}</SidebarFooter>
+      <SidebarFooter>
+        {sidebarItems && <NavUser user={sidebarItems.user} />}
+      </SidebarFooter>
     </Sidebar>
   );
 }

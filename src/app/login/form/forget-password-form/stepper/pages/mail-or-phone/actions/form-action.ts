@@ -1,6 +1,8 @@
 "use server";
+
 import prisma from "@/utils/prisma";
 import { z } from "zod";
+import axios from "axios";
 import emailOrPhoneSchema from "../schema/form.schema";
 
 export async function emailOrPhoneAction(
@@ -29,23 +31,26 @@ export async function emailOrPhoneAction(
         message: "User not found",
       };
     }
-    const { email, name, phone } = existingUser;
+
+    const { email } = existingUser;
+
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/otp/send-otp`,
+      { email },
+      { headers: { "Content-Type": "application/json" } }
+    );
 
     return {
       ok: true,
       status: 200,
-      message: "User found it successfully",
-      data: {
-        email,
-        name,
-        phone,
-      },
+      message: response.data?.message || "OTP sent successfully",
     };
   } catch (err: any) {
+    console.error("Error:", err?.message);
     return {
       ok: false,
       status: 500,
-      message: `Unknown error in create user API: ${err.message}  `,
+      message: "خطا در ارتباط با سرور یا ارسال ایمیل.",
     };
   }
 }

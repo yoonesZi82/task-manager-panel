@@ -1,6 +1,6 @@
 import { Redis } from "@upstash/redis";
 const redis = new Redis({
-  url: "https://warm-lacewing-14304.upstash.io",
-  token: "ATfgAAIncDJhODc4MTFiYTNmZjY0ZmE1ODZlZTc3OWQ1OGIyZjk5M3AyMTQzMDQ",
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN,
 });
 export default redis;
